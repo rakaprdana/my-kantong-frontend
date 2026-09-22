@@ -13,9 +13,9 @@ export const useAuthUser = () => {
   ) => {
     try {
       const response = await axios.post(`${API}/auth/register`, formData);
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-        login(response.data.token);
+      if (response.data.data.token) {
+        localStorage.setItem("token", response.data.data.token);
+        login(response.data.data.token);
         navigate("/dashboard");
       }
     } catch (error: unknown) {
@@ -30,15 +30,25 @@ export const useAuthUser = () => {
   ) => {
     try {
       const response = await axios.post(`${API}/auth/login`, formData);
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-        login(response.data.token);
+      if (response.data.data.token) {
+        localStorage.setItem("token", response.data.data.token);
+        login(response.data.data.token);
         navigate("/dashboard");
+      } else {
+        alert("Format respons tidak valid: Token tidak ditemukan.");
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError && error.response?.data.errors) {
-        alert(error.response?.data?.message || "SignIn failed");
+        const errorMessage =
+          error.response?.data?.message ||
+          error.response?.data?.errors ||
+          "SignIn Failed";
+        alert(errorMessage);
+      } else {
+        alert("Sistem error");
       }
+
+      throw error;
     }
   };
 
