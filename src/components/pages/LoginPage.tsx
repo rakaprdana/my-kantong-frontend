@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../../../@/components/ui/button";
 import {
   Card,
@@ -12,14 +12,17 @@ import {
 import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
 import { useState, type ChangeEvent } from "react";
-import { useAuthUser } from "../../hooks/useAuth";
-import { useAuth } from "../../middlewares/AuthContext";
 import { AxiosError } from "axios";
+import type { SignInType } from "../../interfaces/form-data";
+import { useAuthUser } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuthContext";
 
 export function LoginPage() {
-  const [formLogin, setFormLogin] = useState({ username: "", password: "" });
+  const [formLogin, setFormLogin] = useState<SignInType>({
+    username: "",
+    password: "",
+  });
   const [errors, setErrors] = useState<string[]>([]);
-  const navigate = useNavigate();
 
   const { login } = useAuth();
   const { signIn } = useAuthUser();
@@ -36,13 +39,11 @@ export function LoginPage() {
     e.preventDefault();
 
     if (!formLogin.username || !formLogin.password) {
-      setErrors(["Email and Password are required"]);
+      setErrors(["Username and Password are required"]);
       return;
     }
     try {
-      console.log("success");
       await signIn(formLogin, login);
-      navigate("/dashboard");
     } catch (error: unknown) {
       console.log(error);
       if (error instanceof AxiosError && error.response?.data.errors) {
@@ -55,8 +56,9 @@ export function LoginPage() {
 
   return (
     <main className="flex flex-col justify-center items-center py-28">
-      <section className="p-8">
+      <section className="flex flex-col justify-center items-center p-8">
         <h1 className="text-2xl font-bold text-blue-600">My Kantong</h1>
+        <h2 className="font-bold p-4">Sign In</h2>
       </section>
       <Card className="w-full max-w-sm">
         <CardHeader>
