@@ -57,7 +57,7 @@ export function RegisterPage() {
   return (
     <main className="flex flex-col justify-center items-center py-28">
       <section className="flex flex-col justify-center items-center p-8">
-        <h1 className="text-2xl font-bold text-blue-600">My Kantong</h1>
+        <h1 className="text-2xl font-bold text-mainColor">My Kantong</h1>
         <h2 className="font-bold p-4">Sign Up</h2>
       </section>
       <Card className="w-full max-w-sm">
@@ -69,7 +69,7 @@ export function RegisterPage() {
               Enter your username below to login to your account
             </CardDescription>
           ) : (
-            <CardDescription className="font-bold text-red-500 text-xl">
+            <CardDescription className="font-bold text-destructive text-xl">
               Errors
             </CardDescription>
           )}
@@ -104,7 +104,7 @@ export function RegisterPage() {
               </div>
             </div>
             <CardFooter className="flex-col gap-2">
-              <Button type="submit" className="w-full bg-blue-600">
+              <Button type="submit" className="w-full bg-mainColor">
                 Sign Up
               </Button>
             </CardFooter>
