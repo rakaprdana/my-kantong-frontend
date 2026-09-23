@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Button } from "../../../@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -18,11 +17,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../../../@/components/ui/collapsible";
+
 export default function SideBarLayout() {
   const menuItem = {
     title: "History",
     url: "#",
-    isActive: true,
+    isActive: false,
     items: [
       {
         title: "Income History",
@@ -36,27 +36,36 @@ export default function SideBarLayout() {
   };
 
   return (
-    <SidebarProvider className="border-2 border-green-500 w-1/4">
+    <SidebarProvider className="w-1/4">
       <Sidebar>
         <SidebarHeader>
           <h1 className="p-4 text-mainColor font-bold text-2xl">My Kantong</h1>
         </SidebarHeader>
         <SidebarContent>
           <Link to={"/dashboard"}>
-            <Button className={"w-3/4 mx-4 bg-mainColor text-white"}>
+            <SidebarMenuButton
+              className={
+                "w-[94%] text-left ml-2 bg-mainColor text-white hover:bg-primary/90 hover:text-white"
+              }
+            >
               Dashboard
-            </Button>
+            </SidebarMenuButton>
           </Link>
           <SidebarGroup>
             <SidebarMenu>
               <Collapsible
                 key={menuItem.title}
                 defaultOpen={menuItem.isActive}
-                className="group/collapsible w-3/4 mx-4 bg-mainColor text-white"
+                className="group/collapsible bg-mainColor text-white text-center"
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger
-                    render={<SidebarMenuButton tooltip={menuItem.title} />}
+                    render={
+                      <SidebarMenuButton
+                        className="hover:bg-primary/90 hover:text-white"
+                        tooltip={menuItem.title}
+                      />
+                    }
                   >
                     <span>{menuItem.title}</span>
                   </CollapsibleTrigger>
@@ -64,15 +73,11 @@ export default function SideBarLayout() {
                     <SidebarMenuSub>
                       {menuItem.items.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton
-                            render={
-                              <Link to={subItem.url}>
-                                <span className="text-white">
-                                  {subItem.title}
-                                </span>
-                              </Link>
-                            }
-                          />
+                          <SidebarMenuSubButton className="text-white hover:text-mainColor">
+                            <Link to={subItem.url}>
+                              <span>{subItem.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
                     </SidebarMenuSub>
