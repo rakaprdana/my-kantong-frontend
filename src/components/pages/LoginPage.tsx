@@ -13,7 +13,7 @@ import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
 import { useState, type ChangeEvent } from "react";
 import { AxiosError } from "axios";
-import type { SignInType } from "../../interfaces/form-data";
+import type { SignInType } from "../../types/FormDataType";
 import { useAuthUser } from "../../hooks/useAuth";
 import { useAuth } from "../../hooks/useAuthContext";
 

@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import type { SignInType, SignUpType } from "../interfaces/form-data";
+import type { SignInType, SignUpType } from "../types/FormDataType";
 import api, { API_URL } from "../service/api";
 
 export const useAuthUser = () => {

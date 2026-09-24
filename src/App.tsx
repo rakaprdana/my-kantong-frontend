@@ -4,6 +4,7 @@ import { RegisterPage } from "./components/pages/RegisterPage";
 import MainDashboard from "./components/pages/MainDashboard";
 import AuthProvider from "./middlewares/AuthContext";
 import ProtectedRoute from "./middlewares/AuthProtected";
+import HistoryOutcomePage from "./components/pages/history/HistoryOutcomePage";
 
 function App() {
   return (
@@ -17,6 +18,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/outcome"
+            element={
+              <ProtectedRoute>
+                <HistoryOutcomePage />
               </ProtectedRoute>
             }
           />
