@@ -1,8 +1,7 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import type { SignInType, SignUpType } from "../interfaces/form-data";
-
-export const API = import.meta.env.VITE_API_BASE_URL;
+import api, { API_URL } from "../service/api";
 
 export const useAuthUser = () => {
   const navigate = useNavigate();
@@ -12,7 +11,7 @@ export const useAuthUser = () => {
     login: (token: string) => void,
   ) => {
     try {
-      const response = await axios.post(`${API}/auth/register`, formData);
+      const response = await api.post(`${API_URL}/auth/register`, formData);
       if (response.data.data.token) {
         localStorage.setItem("token", response.data.data.token);
         login(response.data.data.token);
@@ -29,7 +28,7 @@ export const useAuthUser = () => {
     login: (token: string) => void,
   ) => {
     try {
-      const response = await axios.post(`${API}/auth/login`, formData);
+      const response = await api.post(`${API_URL}/auth/login`, formData);
       if (response.data.data.token) {
         localStorage.setItem("token", response.data.data.token);
         login(response.data.data.token);
