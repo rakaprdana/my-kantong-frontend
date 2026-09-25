@@ -5,3 +5,18 @@ export type OutcomeType = {
   category: string;
   information: string;
 };
+
+export type MonthlyOutcomeItem = {
+  _id: number;
+  total: number;
+};
+
+export type CategoryOutcomeItem = {
+  _id: string;
+  total: number;
+};
+
+export type MonthlyOutcomeChartProps = {
+  // token: string;
+  year: number;
+};
