@@ -14,13 +14,13 @@ import {
   TableRow,
 } from "../../../../@/components/ui/table";
 import { Button } from "../../../../@/components/ui/button";
-import { useGetOutcomeHistory } from "../../../hooks/useGetHistory";
+import { useGetIncomeHistory } from "../../../hooks/useGetHistory";
 import { PaginationLayout } from "../pagination-layout";
 import { useState } from "react";
 
-export default function OutcomeTableLayout() {
+export default function IncomeTableLayout() {
   const [page, setPage] = useState(1);
-  const { outcome, pagination, loading } = useGetOutcomeHistory(page);
+  const { income, pagination, loading } = useGetIncomeHistory(page);
 
   return (
     <>
@@ -28,22 +28,22 @@ export default function OutcomeTableLayout() {
         <section className="w-full p-10 flex justify-center text-gray-500">
           Loading...
         </section>
-      ) : outcome.length === 0 ? (
+      ) : income.length === 0 ? (
         <section className="bg-gray-50 w-full p-40 flex items-center justify-center">
-          <p className="text-xl text-gray-300">There isn't anything here</p>
+          <p className="text-xl text-gray-300">There isn't anything</p>
         </section>
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Date</TableHead>
-              <TableHead>Outcome</TableHead>
-              <TableHead>Category</TableHead>
+              <TableHead>Income</TableHead>
+              <TableHead>Information</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {outcome.map((items) => (
+            {income.map((items) => (
               <TableRow key={items._id}>
                 <TableCell className="font-medium">
                   {new Date(items.date).toLocaleDateString("id-ID", {
@@ -52,8 +52,8 @@ export default function OutcomeTableLayout() {
                     year: "numeric",
                   })}
                 </TableCell>
-                <TableCell>{items.outcome}</TableCell>
-                <TableCell>{items.category}</TableCell>
+                <TableCell>{items.income}</TableCell>
+                <TableCell>{items.information}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger

@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
@@ -17,8 +18,10 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../../../@/components/ui/collapsible";
+import { Button } from "../../../@/components/ui/button";
 
 export default function SideBarLayout() {
+  const navigate = useNavigate();
   const menuItem = {
     title: "History",
     url: "#",
@@ -34,6 +37,10 @@ export default function SideBarLayout() {
       },
     ],
   };
+  function handleClickLogout() {
+    localStorage.removeItem("token");
+    navigate("/");
+  }
 
   return (
     <SidebarProvider className="w-1/4">
@@ -73,10 +80,11 @@ export default function SideBarLayout() {
                     <SidebarMenuSub>
                       {menuItem.items.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton className="text-white hover:text-mainColor">
-                            <Link to={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </Link>
+                          <SidebarMenuSubButton
+                            href={subItem.url}
+                            className="text-white hover:text-mainColor"
+                          >
+                            {subItem.title}
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
@@ -87,6 +95,11 @@ export default function SideBarLayout() {
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
+        <SidebarFooter>
+          <Button variant={"destructive"} onClick={handleClickLogout}>
+            Logout
+          </Button>
+        </SidebarFooter>
       </Sidebar>
     </SidebarProvider>
   );
