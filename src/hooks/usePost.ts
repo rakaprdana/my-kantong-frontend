@@ -8,9 +8,10 @@ import type { IncomeType } from "../types/IncomeType";
 export function usePostOutcome(onSuccess?: () => void) {
   const [formOutcome, setFormOutcome] = useState<OutcomeType>({
     date: new Date().toISOString(),
-    outcome: 0,
+    outcome: "",
     category: "",
     information: "",
+    is_delete: false,
   });
   const { callStatusAndMessage, status, message } = useStatus();
 
@@ -24,16 +25,35 @@ export function usePostOutcome(onSuccess?: () => void) {
     }));
   }
 
+  function handleCurrencyChange(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
+    const rawValue = value.replace(/\D/g, "");
+    const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    setFormOutcome((prevData) => ({
+      ...prevData,
+      [name]: formattedValue,
+    }));
+  }
+
   async function handleSubmitFormOutcome(e: React.FormEvent) {
     e.preventDefault();
     callStatusAndMessage("loading", "");
     try {
-      await api.post(`${API_URL}/outcome`, formOutcome);
+      const rawOutcomeNumber = Number(
+        String(formOutcome.outcome).replace(/\./g, ""),
+      );
+      const dataOutcomeToSend = {
+        ...formOutcome,
+        outcome: rawOutcomeNumber,
+      };
+      await api.post(`${API_URL}/outcome`, dataOutcomeToSend);
       setFormOutcome({
         date: new Date().toISOString(),
-        outcome: 0,
+        outcome: "",
         category: "",
         information: "",
+        is_delete: false,
       });
       callStatusAndMessage("success", "Data has been saved");
       onSuccess?.();
@@ -50,6 +70,7 @@ export function usePostOutcome(onSuccess?: () => void) {
   return {
     formOutcome,
     handleChange,
+    handleCurrencyChange,
     handleSubmitFormOutcome,
     status,
     message,
@@ -59,8 +80,9 @@ export function usePostOutcome(onSuccess?: () => void) {
 export function usePostIncome(onSuccess?: () => void) {
   const [formIncome, setFormIncome] = useState<IncomeType>({
     date: new Date().toISOString(),
-    income: 0,
+    income: "",
     information: "",
+    is_delete: false,
   });
   const { callStatusAndMessage, status, message } = useStatus();
 
@@ -74,15 +96,35 @@ export function usePostIncome(onSuccess?: () => void) {
     }));
   }
 
+  function handleCurrencyChange(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    const rawValue = value.replace(/\D/g, "");
+
+    const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    setFormIncome((prevData) => ({
+      ...prevData,
+      [name]: formattedValue,
+    }));
+  }
+
   async function handleSubmitFormIncome(e: React.FormEvent) {
     e.preventDefault();
     callStatusAndMessage("loading", "");
     try {
-      await api.post(`${API_URL}/income`, formIncome);
+      const rawIncomeNumber = Number(
+        String(formIncome.income).replace(/\./g, ""),
+      );
+      const dataIncomeToSend = {
+        ...formIncome,
+        income: rawIncomeNumber,
+      };
+      await api.post(`${API_URL}/income`, dataIncomeToSend);
       setFormIncome({
         date: new Date().toISOString(),
-        income: 0,
+        income: "",
         information: "",
+        is_delete: false,
       });
       callStatusAndMessage("success", "Data has been saved");
       onSuccess?.();
@@ -100,6 +142,7 @@ export function usePostIncome(onSuccess?: () => void) {
     formIncome,
     handleChange,
     handleSubmitFormIncome,
+    handleCurrencyChange,
     status,
     message,
   };

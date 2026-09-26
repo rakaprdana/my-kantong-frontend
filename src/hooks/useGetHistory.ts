@@ -14,31 +14,32 @@ export function useGetOutcomeHistory(page: number = 1, limit: number = 10) {
     pageSize: limit,
   });
   const [loading, setLoading] = useState<boolean>(true);
-  const token = localStorage.getItem("token");
+
+  async function fetchOutcomeHistories() {
+    try {
+      setLoading(true);
+      const response = await api.get(`${API_URL}/outcome`, {
+        params: { page, limit },
+      });
+      const { items, currentPage, totalPages, totalItems, pageSize } =
+        response.data.data;
+      setOutcome(items);
+      setPagination({ currentPage, totalPages, totalItems, pageSize });
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data?.errors) {
+        console.error(error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function fetchOutcomeHistories() {
-      try {
-        setLoading(true);
-        const response = await api.get(`${API_URL}/outcome`, {
-          params: { page, limit },
-        });
-        const { items, currentPage, totalPages, totalItems, pageSize } =
-          response.data.data;
-        setOutcome(items);
-        setPagination({ currentPage, totalPages, totalItems, pageSize });
-      } catch (error) {
-        if (error instanceof AxiosError && error.response?.data?.errors) {
-          console.error(error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchOutcomeHistories();
-  }, [token, page, limit]);
+  }, [page, limit]);
 
-  return { outcome, pagination, loading };
+  return { outcome, pagination, loading, refetch: fetchOutcomeHistories };
 }
 
 export function useGetIncomeHistory(page: number = 1, limit: number = 10) {
@@ -50,29 +51,30 @@ export function useGetIncomeHistory(page: number = 1, limit: number = 10) {
     pageSize: limit,
   });
   const [loading, setLoading] = useState<boolean>(true);
-  const token = localStorage.getItem("token");
+
+  async function fetchIncomeHistories() {
+    try {
+      setLoading(true);
+      const response = await api.get(`${API_URL}/income`, {
+        params: { page, limit },
+      });
+      const { items, currentPage, totalPages, totalItems, pageSize } =
+        response.data.data;
+      setIncome(items);
+      setPagination({ currentPage, totalPages, totalItems, pageSize });
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data?.errors) {
+        console.error(error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function fetchIncomeHistories() {
-      try {
-        setLoading(true);
-        const response = await api.get(`${API_URL}/income`, {
-          params: { page, limit },
-        });
-        const { items, currentPage, totalPages, totalItems, pageSize } =
-          response.data.data;
-        setIncome(items);
-        setPagination({ currentPage, totalPages, totalItems, pageSize });
-      } catch (error) {
-        if (error instanceof AxiosError && error.response?.data?.errors) {
-          console.error(error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchIncomeHistories();
-  }, [token, page, limit]);
+  }, [page, limit]);
 
-  return { income, pagination, loading };
+  return { income, pagination, loading, refetch: fetchIncomeHistories };
 }
