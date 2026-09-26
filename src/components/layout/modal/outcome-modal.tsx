@@ -23,6 +23,7 @@ export default function OutcomeModal({
     formOutcome,
     handleChange,
     handleSubmitFormOutcome,
+    handleCurrencyChange,
     status,
     message,
   } = usePostOutcome(onSuccess);
@@ -79,10 +80,11 @@ export default function OutcomeModal({
                 <Input
                   id="outcome"
                   name="outcome"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   required
                   value={formOutcome.outcome}
-                  onChange={handleChange}
+                  onChange={handleCurrencyChange}
                 />
               </div>
             </div>

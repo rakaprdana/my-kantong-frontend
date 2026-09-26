@@ -2,7 +2,7 @@ import { Button } from "../../../../@/components/ui/button";
 import ModalHook from "../../../hooks/useModal";
 import type { ModalType } from "../../../types/ModalType";
 import IncomeModal from "./income-modal";
-import OutcomeModal from "./outcome.-modal";
+import OutcomeModal from "./outcome-modal";
 
 export default function ModalLayout({
   canShow,

@@ -18,8 +18,14 @@ export default function IncomeModal({
   onClose,
   onSuccess,
 }: ModalType) {
-  const { formIncome, handleChange, handleSubmitFormIncome, status, message } =
-    usePostIncome(onSuccess);
+  const {
+    formIncome,
+    handleChange,
+    handleSubmitFormIncome,
+    handleCurrencyChange,
+    status,
+    message,
+  } = usePostIncome(onSuccess);
   if (!canShow) {
     return null;
   }
@@ -73,10 +79,11 @@ export default function IncomeModal({
                 <Input
                   id="income"
                   name="income"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   required
                   value={formIncome.income}
-                  onChange={handleChange}
+                  onChange={handleCurrencyChange}
                 />
               </div>
             </div>
