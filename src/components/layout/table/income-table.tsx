@@ -17,10 +17,25 @@ import { Button } from "../../../../@/components/ui/button";
 import { useGetIncomeHistory } from "../../../hooks/useGetHistory";
 import { PaginationLayout } from "../pagination-layout";
 import { useState } from "react";
+import { useDelete } from "../../../hooks/useDelete";
 
 export default function IncomeTableLayout() {
   const [page, setPage] = useState(1);
-  const { income, pagination, loading } = useGetIncomeHistory(page);
+  const { income, pagination, loading, refetch } = useGetIncomeHistory(page);
+  const { executeDelete, isLoading } = useDelete();
+
+  async function handleDelete(id?: string) {
+    const isConfirm = window.confirm("Are you sure delete this item ?");
+
+    if (isConfirm) {
+      try {
+        await executeDelete(`/income/${id}`);
+        refetch();
+      } catch (error) {
+        console.error("Failed delete item: ", error);
+      }
+    }
+  }
 
   return (
     <>
@@ -65,12 +80,13 @@ export default function IncomeTableLayout() {
                       }
                     />
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Detail</DropdownMenuItem>
                       <DropdownMenuItem>Edit</DropdownMenuItem>
-                      <DropdownMenuItem>Duplicate</DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem variant="destructive">
-                        Delete
+                      <DropdownMenuItem
+                        onClick={() => handleDelete(items._id)}
+                        variant="destructive"
+                      >
+                        {isLoading ? "Delete item ..." : "Delete"}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

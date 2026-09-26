@@ -1,9 +1,10 @@
 export type OutcomeType = {
   _id?: string;
   date: string;
-  outcome: number;
+  outcome: string | number;
   category: string;
   information: string;
+  is_delete: boolean;
 };
 
 export type MonthlyOutcomeItem = {
