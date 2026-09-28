@@ -6,15 +6,11 @@ import api, { API_URL } from "../service/api";
 export const useAuthUser = () => {
   const navigate = useNavigate();
 
-  const signUp = async (
-    formData: SignUpType,
-    login: (token: string) => void,
-  ) => {
+  const signUp = async (formData: SignUpType, login: () => void) => {
     try {
       const response = await api.post(`${API_URL}/auth/register`, formData);
-      if (response.data.data.token) {
-        localStorage.setItem("token", response.data.data.token);
-        login(response.data.data.token);
+      if (response.status === 201 || response.data.success) {
+        login();
         navigate("/dashboard");
       }
     } catch (error: unknown) {
@@ -23,21 +19,18 @@ export const useAuthUser = () => {
       }
     }
   };
-  const signIn = async (
-    formData: SignInType,
-    login: (token: string) => void,
-  ) => {
+
+  const signIn = async (formData: SignInType, login: () => void) => {
     try {
       const response = await api.post(`${API_URL}/auth/login`, formData);
-      if (response.data.data.token) {
-        localStorage.setItem("token", response.data.data.token);
-        login(response.data.data.token);
+      if (response.status === 200 || response.data.success) {
+        login();
         navigate("/dashboard");
       } else {
-        alert("Format respons tidak valid: Token tidak ditemukan.");
+        alert("Login failed. Please check your credentials.");
       }
     } catch (error: unknown) {
-      if (error instanceof AxiosError && error.response?.data.errors) {
+      if (error instanceof AxiosError && error.response?.data) {
         const errorMessage =
           error.response?.data?.message ||
           error.response?.data?.errors ||
@@ -46,7 +39,6 @@ export const useAuthUser = () => {
       } else {
         alert("Sistem error");
       }
-
       throw error;
     }
   };

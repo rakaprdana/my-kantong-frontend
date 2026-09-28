@@ -19,9 +19,12 @@ import {
   CollapsibleTrigger,
 } from "../../../@/components/ui/collapsible";
 import { Button } from "../../../@/components/ui/button";
+import api from "../../service/api";
+import { useAuth } from "../../hooks/useAuthContext";
 
 export default function SideBarLayout() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const menuItem = {
     title: "History",
     url: "#",
@@ -37,9 +40,14 @@ export default function SideBarLayout() {
       },
     ],
   };
-  function handleClickLogout() {
-    localStorage.removeItem("token");
-    navigate("/");
+  async function handleClickLogout() {
+    try {
+      await api.post("/auth/logout");
+      logout();
+      navigate("/");
+    } catch (error) {
+      console.error("Gagal logout:", error);
+    }
   }
 
   return (

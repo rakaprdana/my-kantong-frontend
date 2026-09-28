@@ -35,9 +35,8 @@ api.interceptors.response.use(
     const isAuthRoute =
       url.includes("/auth/login") || url.includes("/auth/register");
 
-    if (status === 400 && !isAuthRoute) {
-      localStorage.removeItem("token"); // hapus data user lain jika ada
-      // Hindari redirect berulang kalau sudah di halaman login
+    if (status === 401 && !isAuthRoute) {
+      localStorage.removeItem("isLoggedIn");
       if (window.location.pathname !== "/") {
         window.location.href = "/";
       }

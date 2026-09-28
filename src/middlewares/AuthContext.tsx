@@ -3,17 +3,17 @@ import { AuthContext } from "../hooks/useAuthContext";
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    const token = localStorage.getItem("token");
-    return !!token;
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    return isLoggedIn === "true";
   });
 
-  function login(token: string) {
-    localStorage.setItem("token", token);
+  function login() {
+    localStorage.setItem("isLoggedIn", "true");
     setIsAuthenticated(true);
   }
 
   function logout() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("isLoggedIn");
     setIsAuthenticated(false);
   }
 
