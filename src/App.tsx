@@ -6,6 +6,7 @@ import AuthProvider from "./middlewares/AuthContext";
 import ProtectedRoute from "./middlewares/AuthProtected";
 import HistoryOutcomePage from "./components/pages/history/HistoryOutcomePage";
 import HistoryIncomePage from "./components/pages/history/HistoryIncomePage";
+import DetailOutcomePage from "./components/pages/DetailOutcomePage";
 
 function App() {
   return (
@@ -35,6 +36,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <HistoryIncomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/detail/:id"
+            element={
+              <ProtectedRoute>
+                <DetailOutcomePage />
               </ProtectedRoute>
             }
           />

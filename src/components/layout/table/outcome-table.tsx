@@ -18,11 +18,13 @@ import { useGetOutcomeHistory } from "../../../hooks/useGetHistory";
 import { PaginationLayout } from "../pagination-layout";
 import { useState } from "react";
 import { useDelete } from "../../../hooks/useDelete";
+import { useNavigate } from "react-router-dom";
 
 export default function OutcomeTableLayout() {
   const [page, setPage] = useState(1);
   const { outcome, pagination, loading, refetch } = useGetOutcomeHistory(page);
   const { executeDelete, isLoading } = useDelete();
+  const navigate = useNavigate();
 
   async function handleDelete(id?: string) {
     const isConfirm = window.confirm("Are you sure delete this item ?");
@@ -36,6 +38,11 @@ export default function OutcomeTableLayout() {
       }
     }
   }
+
+  function handleNextDetailPage(id?: string) {
+    navigate(`/detail/${id}`);
+  }
+
   return (
     <>
       {loading ? (
@@ -79,8 +86,11 @@ export default function OutcomeTableLayout() {
                       }
                     />
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Detail</DropdownMenuItem>
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => handleNextDetailPage(items._id)}
+                      >
+                        Detail
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         onClick={() => handleDelete(items._id)}
