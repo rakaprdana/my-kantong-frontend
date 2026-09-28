@@ -11,26 +11,27 @@ export default function useGetItemById<T>({
 }) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(!!id);
-
+  async function fetchOutcomeById() {
+    try {
+      setLoading(true);
+      const response = await api.get(`${API_URL}${endpoint}${id}`);
+      setData(response.data.data);
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data?.error) {
+        alert(error.response.data.error);
+      } else {
+        alert("Error fetching data");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
   useEffect(() => {
     if (!id) return;
-    async function fetchOutcomeById() {
-      try {
-        setLoading(true);
-        const response = await api.get(`${API_URL}${endpoint}${id}`);
-        setData(response.data.data);
-      } catch (error) {
-        if (error instanceof AxiosError && error.response?.data?.error) {
-          alert(error.response.data.error);
-        } else {
-          alert("Error fetching data");
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchOutcomeById();
   }, [id, endpoint]);
 
-  return { data, loading };
+  return { data, loading, refetch: fetchOutcomeById };
 }

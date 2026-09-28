@@ -40,7 +40,7 @@ export default function OutcomeTableLayout() {
   }
 
   function handleNextDetailPage(id?: string) {
-    navigate(`/detail/${id}`);
+    navigate(`/detail/outcome/${id}`);
   }
 
   return (

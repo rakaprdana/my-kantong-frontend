@@ -18,11 +18,13 @@ import { useGetIncomeHistory } from "../../../hooks/useGetHistory";
 import { PaginationLayout } from "../pagination-layout";
 import { useState } from "react";
 import { useDelete } from "../../../hooks/useDelete";
+import { useNavigate } from "react-router-dom";
 
 export default function IncomeTableLayout() {
   const [page, setPage] = useState(1);
   const { income, pagination, loading, refetch } = useGetIncomeHistory(page);
   const { executeDelete, isLoading } = useDelete();
+  const navigate = useNavigate();
 
   async function handleDelete(id?: string) {
     const isConfirm = window.confirm("Are you sure delete this item ?");
@@ -35,6 +37,10 @@ export default function IncomeTableLayout() {
         console.error("Failed delete item: ", error);
       }
     }
+  }
+
+  function handleNextDetailPage(id?: string) {
+    navigate(`/detail/income/${id}`);
   }
 
   return (
@@ -80,7 +86,11 @@ export default function IncomeTableLayout() {
                       }
                     />
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => handleNextDetailPage(items._id)}
+                      >
+                        Detail
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         onClick={() => handleDelete(items._id)}
